@@ -17,8 +17,12 @@ export const startServer = () => {
   const app = express();
 
   app.use(express.json());
-  app.use(cors());
-
+  app.use(
+    cors({
+      origin: ['http://localhost:5173', 'https://slim-moms-wheat.vercel.app/'],
+      credentials: true,
+    }),
+  );
   app.use(
     pino({
       transport: {
