@@ -19,7 +19,7 @@ export const startServer = () => {
   app.use(express.json());
   app.use(
     cors({
-      origin: ['http://localhost:5173', 'https://slim-moms-wheat.vercel.app/'],
+      origin: ['http://localhost:5173', 'https://slim-moms-wheat.vercel.app'],
       credentials: true,
     }),
   );
@@ -43,7 +43,7 @@ export const startServer = () => {
   // Genel hata yönetimi
   app.use(errorHandler);
 
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server is running on port ${PORT}`);
   });
 };
