@@ -182,12 +182,13 @@ Backend tarafında örnek `.env` yapısı:
 
 ```env
 PORT=5000
-MONGODB_USER=your_mongodb_user
-MONGODB_PASSWORD=your_mongodb_password
-MONGODB_URL=cluster0.audyhuc.mongodb.net
-MONGODB_DB=slim-moms-db
-JWT_SECRET=your_jwt_secret
+
+MONGODB_URL=mongodb+srv://username:password@cluster0.example.mongodb.net/slim_moms?appName=Cluster0
+
+JWT_SECRET=your-super-secret-jwt-key
 JWT_EXPIRES_IN=7d
+
+USE_MOCK_AUTH=true
 ```
 
 ---
