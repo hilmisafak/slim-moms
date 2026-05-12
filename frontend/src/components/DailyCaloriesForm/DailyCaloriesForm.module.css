@@ -1,0 +1,178 @@
+.calculatorFormContainer {
+  width: 100%;
+}
+
+.calculatorForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.calculatorTitle {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #212121;
+  margin-bottom: 30px;
+}
+
+.formInputsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.inputColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.inputGroup {
+  position: relative;
+  width: 100%;
+}
+
+.inputGroup input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 8px 0;
+  font-size: 14px;
+  background-color: transparent;
+  outline: none;
+  color: #212121;
+}
+
+.inputGroup label {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  font-weight: 700;
+  font-size: 14px;
+  color: #9b9faa;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.inputGroup input:focus ~ label,
+.inputGroup input:not(:placeholder-shown) ~ label {
+  top: -15px;
+  font-size: 12px;
+  color: #fc842d;
+}
+
+.radioGroupWrapper {
+  margin-top: -10px;
+}
+
+.radioTitle {
+  font-weight: 700;
+  font-size: 14px;
+  color: #9b9faa;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 8px;
+  width: 100%;
+}
+
+.radioGroup {
+  display: flex;
+  gap: 20px;
+}
+
+.radioLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #9b9faa;
+}
+
+.radioLabel input[type='radio'] {
+  display: none;
+}
+
+.customRadio {
+  width: 20px;
+  height: 20px;
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  position: relative;
+  transition: border-color 0.2s ease;
+}
+
+.radioLabel input[type='radio']:checked ~ .customRadio {
+  border-color: #fc842d;
+}
+
+.radioLabel input[type='radio']:checked ~ .customRadio::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background-color: #fc842d;
+  border-radius: 50%;
+}
+
+.radioLabel input[type='radio']:checked {
+  color: #fc842d;
+}
+
+.submitBtn {
+  margin-top: 40px;
+  background-color: #fc842d;
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  padding: 13px 25px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(252, 132, 45, 0.5);
+  transition: transform 0.2s ease;
+  max-width: 210px;
+  align-self: center;
+}
+
+.submitBtn:hover {
+  transform: scale(1.05);
+}
+
+@media screen and (min-width: 768px) {
+  .calculatorTitle {
+    font-size: 34px;
+    margin-bottom: 60px;
+    max-width: 510px;
+  }
+
+  .formInputsWrapper {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 32px;
+    margin-bottom: 60px;
+  }
+
+  .inputColumn {
+    width: 240px;
+  }
+
+  .submitBtn {
+    margin-top: 0;
+    align-self: flex-start;
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .calculatorFormContainer {
+    width: 500px;
+  }
+
+  .submitBtn {
+    align-self: flex-end;
+  }
+}
