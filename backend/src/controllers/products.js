@@ -178,8 +178,7 @@ export const calculateDailyCaloriesController = async (req, res, next) => {
       desiredWeight: Number(desiredWeight),
     });
 
-    // Ürün verileri, kan grubu işaretlerini 1..4 numaralı dizinlerde saklar.
-    const bloodTypeIndex = normalizedBloodType;
+    const bloodTypeIndex = normalizedBloodType - 1;
 
     const notRecommendedProducts = await Product.find({
       [`groupBloodNotAllowed.${bloodTypeIndex}`]: true,
