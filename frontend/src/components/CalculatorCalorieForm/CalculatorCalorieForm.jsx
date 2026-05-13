@@ -39,8 +39,8 @@ const CalculatorCalorieForm = () => {
       initialValues={initialValues}
       validationSchema={calculatorValidationSchema}
       onSubmit={handleSubmit}
-      validateOnBlur
-      validateOnChange={false}
+      validateOnBlur={true}
+      validateOnChange={true}
     >
       {({ isValid, dirty }) => (
         <Form className={css.form}>
