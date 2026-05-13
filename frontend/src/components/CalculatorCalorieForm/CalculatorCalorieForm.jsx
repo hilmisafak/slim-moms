@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Formik, Form, Field, ErrorMessage, useFormikContext } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { calculateDailyCalories } from '../../redux/calculator/calculatorOperations';
 import { selectCalculatorIsLoading } from '../../redux/calculator/calculatorSelectors';
 import { calculatorValidationSchema } from '../../utils/validationSchema';
 import css from './CalculatorCalorieForm.module.css';
 
-const STORAGE_KEY = 'calculatorForm';
+const STORAGE_KEY = 'calculatorFormValues';
 
 const defaultValues = {
   height: '',
@@ -16,25 +16,38 @@ const defaultValues = {
   bloodType: '',
 };
 
+const FormPersistence = () => {
+  const { values } = useFormikContext();
+
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
+  }, [values]);
+
+  return null;
+};
+
+const getInitialValues = () => {
+  const storedValues = localStorage.getItem(STORAGE_KEY);
+
+  if (!storedValues) {
+    return defaultValues;
+  }
+
+  try {
+    return {
+      ...defaultValues,
+      ...JSON.parse(storedValues),
+    };
+  } catch {
+    localStorage.removeItem(STORAGE_KEY);
+    return defaultValues;
+  }
+};
+
 const CalculatorCalorieForm = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectCalculatorIsLoading);
-  const [savedValues, setSavedValues] = useState(defaultValues);
-
-  useEffect(() => {
-    const storedValues = localStorage.getItem(STORAGE_KEY);
-
-    if (!storedValues) return;
-
-    try {
-      setSavedValues({
-        ...defaultValues,
-        ...JSON.parse(storedValues),
-      });
-    } catch {
-      localStorage.removeItem(STORAGE_KEY);
-    }
-  }, []);
+  const [initialValues] = useState(getInitialValues);
 
   const handleSubmit = async (values) => {
     try {
@@ -56,16 +69,13 @@ const CalculatorCalorieForm = () => {
 
   return (
     <Formik
-      initialValues={savedValues}
-      enableReinitialize
+      initialValues={initialValues}
       validationSchema={calculatorValidationSchema}
       onSubmit={handleSubmit}
       validateOnBlur={true}
       validateOnChange={true}
     >
-      {({ isValid, dirty, values }) => {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
-
+      {({ isValid, values }) => {
         const isFormFilled =
           values.height &&
           values.age &&
@@ -75,6 +85,8 @@ const CalculatorCalorieForm = () => {
 
         return (
           <Form className={css.form}>
+            <FormPersistence />
+
             <div className={css.fields}>
               <div className={css.col}>
                 <div className={css.field}>
