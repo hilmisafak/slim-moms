@@ -8,7 +8,8 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "lint": "eslint **/*.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed:products": "node src/db/seedProducts.js"
   },
   "keywords": [],
   "author": "Kerem Yıldırım <keremyldrm1670@gmail.com>",
