@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import { calculateDailyCalories } from '../../redux/calculator/calculatorOperations';
@@ -5,7 +6,9 @@ import { selectCalculatorIsLoading } from '../../redux/calculator/calculatorSele
 import { calculatorValidationSchema } from '../../utils/validationSchema';
 import css from './CalculatorCalorieForm.module.css';
 
-const initialValues = {
+const STORAGE_KEY = 'calculatorForm';
+
+const defaultValues = {
   height: '',
   age: '',
   currentWeight: '',
@@ -16,8 +19,24 @@ const initialValues = {
 const CalculatorCalorieForm = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(selectCalculatorIsLoading);
+  const [savedValues, setSavedValues] = useState(defaultValues);
 
-  const handleSubmit = async (values, { resetForm }) => {
+  useEffect(() => {
+    const storedValues = localStorage.getItem(STORAGE_KEY);
+
+    if (!storedValues) return;
+
+    try {
+      setSavedValues({
+        ...defaultValues,
+        ...JSON.parse(storedValues),
+      });
+    } catch {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+  }, []);
+
+  const handleSubmit = async (values) => {
     try {
       await dispatch(
         calculateDailyCalories({
@@ -28,105 +47,120 @@ const CalculatorCalorieForm = () => {
           bloodType: Number(values.bloodType),
         }),
       ).unwrap();
-      resetForm();
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
     } catch {
-      //Error toast is handled in the async operation.
+      // Error toast is handled in the async operation.
     }
   };
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={savedValues}
+      enableReinitialize
       validationSchema={calculatorValidationSchema}
       onSubmit={handleSubmit}
       validateOnBlur={true}
       validateOnChange={true}
     >
-      {({ isValid, dirty }) => (
-        <Form className={css.form}>
-          <div className={css.fields}>
-            {/* SOL */}
-            <div className={css.col}>
-              <div className={css.field}>
-                <label className={css.label}>Height *</label>
-                <Field className={css.input} name="height" type="number" />
-                <ErrorMessage
-                  name="height"
-                  component="p"
-                  className={css.error}
-                />
-              </div>
+      {({ isValid, dirty, values }) => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(values));
 
-              <div className={css.field}>
-                <label className={css.label}>Age *</label>
-                <Field className={css.input} name="age" type="number" />
-                <ErrorMessage name="age" component="p" className={css.error} />
-              </div>
+        const isFormFilled =
+          values.height &&
+          values.age &&
+          values.currentWeight &&
+          values.desiredWeight &&
+          values.bloodType;
 
-              <div className={css.field}>
-                <label className={css.label}>Current weight *</label>
-                <Field
-                  className={css.input}
-                  name="currentWeight"
-                  type="number"
-                />
-                <ErrorMessage
-                  name="currentWeight"
-                  component="p"
-                  className={css.error}
-                />
-              </div>
-            </div>
-
-            {/* SAĞ */}
-            <div className={css.col}>
-              <div className={css.field}>
-                <label className={css.label}>Desired weight *</label>
-                <Field
-                  className={css.input}
-                  name="desiredWeight"
-                  type="number"
-                />
-                <ErrorMessage
-                  name="desiredWeight"
-                  component="p"
-                  className={css.error}
-                />
-              </div>
-
-              <div className={css.bloodTypeGroup}>
-                <p className={css.bloodTypeLabel}>Blood type *</p>
-                <div className={css.radioGroup}>
-                  {[1, 2, 3, 4].map((type) => (
-                    <label key={type} className={css.radioLabel}>
-                      <Field
-                        className={css.radioInput}
-                        type="radio"
-                        name="bloodType"
-                        value={String(type)}
-                      />
-                      {type}
-                    </label>
-                  ))}
+        return (
+          <Form className={css.form}>
+            <div className={css.fields}>
+              <div className={css.col}>
+                <div className={css.field}>
+                  <label className={css.label}>Height *</label>
+                  <Field className={css.input} name="height" type="number" />
+                  <ErrorMessage
+                    name="height"
+                    component="p"
+                    className={css.error}
+                  />
                 </div>
-                <ErrorMessage
-                  name="bloodType"
-                  component="p"
-                  className={css.error}
-                />
+
+                <div className={css.field}>
+                  <label className={css.label}>Age *</label>
+                  <Field className={css.input} name="age" type="number" />
+                  <ErrorMessage
+                    name="age"
+                    component="p"
+                    className={css.error}
+                  />
+                </div>
+
+                <div className={css.field}>
+                  <label className={css.label}>Current weight *</label>
+                  <Field
+                    className={css.input}
+                    name="currentWeight"
+                    type="number"
+                  />
+                  <ErrorMessage
+                    name="currentWeight"
+                    component="p"
+                    className={css.error}
+                  />
+                </div>
+              </div>
+
+              <div className={css.col}>
+                <div className={css.field}>
+                  <label className={css.label}>Desired weight *</label>
+                  <Field
+                    className={css.input}
+                    name="desiredWeight"
+                    type="number"
+                  />
+                  <ErrorMessage
+                    name="desiredWeight"
+                    component="p"
+                    className={css.error}
+                  />
+                </div>
+
+                <div className={css.bloodTypeGroup}>
+                  <p className={css.bloodTypeLabel}>Blood type *</p>
+                  <div className={css.radioGroup}>
+                    {[1, 2, 3, 4].map((type) => (
+                      <label key={type} className={css.radioLabel}>
+                        <Field
+                          className={css.radioInput}
+                          type="radio"
+                          name="bloodType"
+                          value={String(type)}
+                        />
+                        {type}
+                      </label>
+                    ))}
+                  </div>
+                  <ErrorMessage
+                    name="bloodType"
+                    component="p"
+                    className={css.error}
+                  />
+                </div>
               </div>
             </div>
-          </div>
 
-          <button
-            className={css.button}
-            type="submit"
-            disabled={!isValid || !dirty || isLoading}
-          >
-            {isLoading ? 'Calculating...' : 'Start losing weight'}
-          </button>
-        </Form>
-      )}
+            <button
+              className={css.button}
+              type="submit"
+              disabled={!isFormFilled || !isValid || isLoading}
+            >
+              {isLoading ? 'Calculating...' : 'Start losing weight'}
+            </button>
+          </Form>
+        );
+      }}
     </Formik>
   );
 };
