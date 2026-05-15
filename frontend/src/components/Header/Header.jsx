@@ -47,7 +47,14 @@ const Header = () => {
               <UserInfo />
             </div>
           )}
-          <button className={styles.menuToggleBtn} onClick={toggleMenu}>
+          <button
+            type="button"
+            className={styles.menuToggleBtn}
+            onClick={toggleMenu}
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isMenuOpen}
+            aria-controls="mobile-menu"
+          >
             {isMenuOpen ? (
               <svg
                 width="24"
@@ -114,7 +121,7 @@ const Header = () => {
 
       {isMenuOpen && (
         <div className={styles.mobileMenuOverlay}>
-          <nav className={styles.mobileNavLinks}>
+          <nav id="mobile-menu" className={styles.mobileNavLinks}>
             {mobileLinks.map(({ to, label }) => (
               <NavLink
                 key={to}

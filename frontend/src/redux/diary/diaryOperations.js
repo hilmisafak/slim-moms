@@ -1,6 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import axiosInstance from '../../services/api/axiosInstance.js';
+import axiosInstance, {
+  getErrorMessage,
+} from '../../services/api/axiosInstance.js';
 import { showLoader, hideLoader } from '../global/globalSlice.js';
 
 export const fetchDiary = createAsyncThunk(
@@ -11,10 +13,12 @@ export const fetchDiary = createAsyncThunk(
       const { data } = await axiosInstance.get(`/api/diary?date=${date}`);
       return data;
     } catch (error) {
+      const message = getErrorMessage(error);
+      
       if (error.response?.status !== 404) {
-        toast.error(error.response?.data?.message ?? 'Failed to load diary');
+        toast.error(message);
       }
-      return thunkAPI.rejectWithValue(error.response?.data?.message);
+      return thunkAPI.rejectWithValue(message);
     } finally {
       thunkAPI.dispatch(hideLoader());
     }

@@ -3,6 +3,7 @@ import { toast } from 'react-toastify';
 import axiosInstance, {
   setAuthHeader,
   clearAuthHeader,
+  getErrorMessage,
 } from '../../services/api/axiosInstance.js';
 
 import { showLoader, hideLoader } from '../global/globalSlice.js';
@@ -22,7 +23,7 @@ export const registerUser = createAsyncThunk(
 
       return data.data;
     } catch (error) {
-      const message = error.response?.data?.message || 'Registration failed';
+      const message = getErrorMessage(error);
 
       toast.error(message);
 
@@ -47,7 +48,7 @@ export const loginUser = createAsyncThunk(
 
       return data.data;
     } catch (error) {
-      const message = error.response?.data?.message || 'Login failed';
+      const message = getErrorMessage(error);
 
       toast.error(message);
 
@@ -70,7 +71,7 @@ export const logoutUser = createAsyncThunk(
 
       toast.success(data.message || 'Logged out successfully!');
     } catch (error) {
-      const message = error.response?.data?.message || 'Logout failed';
+      const message = getErrorMessage(error);
 
       toast.error(message);
 
@@ -100,7 +101,7 @@ export const refreshUser = createAsyncThunk(
     } catch (error) {
       clearAuthHeader();
 
-      const message = error.response?.data?.message || 'Failed to refresh user';
+      const message = getErrorMessage(error);
 
       return thunkAPI.rejectWithValue(message);
     }

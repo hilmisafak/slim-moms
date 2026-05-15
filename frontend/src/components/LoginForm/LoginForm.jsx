@@ -23,79 +23,78 @@ const LoginForm = () => {
   });
 
   useEffect(() => {
-  dispatch(clearAuthError());
-
-  return () => {
     dispatch(clearAuthError());
-  };
+
+    return () => {
+      dispatch(clearAuthError());
+    };
   }, [dispatch]);
 
+  const handleBlur = async (event) => {
+    const { name, value } = event.target;
 
-const handleBlur = async event => {
-  const { name, value } = event.target;
+    try {
+      await loginValidationSchema.validateAt(name, {
+        ...formData,
+        [name]: value,
+      });
 
-  try {
-    await loginValidationSchema.validateAt(name, {
-      ...formData,
+      setErrors((prev) => ({
+        ...prev,
+        [name]: '',
+      }));
+    } catch (error) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: error.message,
+      }));
+    }
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+
+    if (error) {
+      dispatch(clearAuthError());
+    }
+
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
 
-    setErrors(prev => ({
+    setErrors((prev) => ({
       ...prev,
       [name]: '',
     }));
-  } catch (error) {
-    setErrors(prev => ({
-      ...prev,
-      [name]: error.message,
-    }));
-  }
-};
+  };
 
-  const handleChange = event => {
-  const { name, value } = event.target;
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  if (error) {
-    dispatch(clearAuthError());
-  }
-
-  setFormData(prev => ({
-    ...prev,
-    [name]: value,
-  }));
-
-  setErrors(prev => ({
-    ...prev,
-    [name]: '',
-  }));
-};
-
-const handleSubmit = async event => {
-  event.preventDefault();
-
-  try {
-    await loginValidationSchema.validate(formData, {
-      abortEarly: false,
-    });
-
-    setErrors({});
-
-    await dispatch(loginUser(formData)).unwrap();
-
-    navigate('/diary');
-  } catch (err) {
-    if (err.inner) {
-      const newErrors = {};
-
-      err.inner.forEach(error => {
-        newErrors[error.path] = error.message;
+    try {
+      await loginValidationSchema.validate(formData, {
+        abortEarly: false,
       });
 
-      setErrors(newErrors);
-      return;
+      setErrors({});
+
+      await dispatch(loginUser(formData)).unwrap();
+
+      navigate('/diary');
+    } catch (err) {
+      if (err.inner) {
+        const newErrors = {};
+
+        err.inner.forEach((error) => {
+          newErrors[error.path] = error.message;
+        });
+
+        setErrors(newErrors);
+        return;
+      }
     }
-  }
-};
+  };
 
   return (
     <div className={css.formContainer}>
@@ -107,6 +106,8 @@ const handleSubmit = async event => {
             <span className={css.labelText}>Email *</span>
             <input
               className={`${css.input} ${errors.email ? css.errorInput : ''}`}
+              id="email"
+              autoComplete="email"
               type="email"
               name="email"
               value={formData.email}
@@ -120,13 +121,17 @@ const handleSubmit = async event => {
             <span className={css.labelText}>Password *</span>
             <input
               className={`${css.input} ${errors.password ? css.errorInput : ''}`}
+              id="password"
               type="password"
+              autoComplete="current-password"
               name="password"
               value={formData.password}
               onChange={handleChange}
               onBlur={handleBlur}
             />
-            {errors.password && <p className={css.fieldError}>{errors.password}</p>}
+            {errors.password && (
+              <p className={css.fieldError}>{errors.password}</p>
+            )}
           </label>
         </div>
 
@@ -138,12 +143,12 @@ const handleSubmit = async event => {
           </button>
 
           <button
-  className={css.secondaryBtn}
-  type="button"
-  onClick={() => navigate('/register')}
->
-  Register
-</button>
+            className={css.secondaryBtn}
+            type="button"
+            onClick={() => navigate('/register')}
+          >
+            Register
+          </button>
         </div>
       </form>
     </div>

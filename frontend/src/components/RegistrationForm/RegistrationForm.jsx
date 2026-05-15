@@ -16,7 +16,6 @@ const RegistrationForm = () => {
   const isLoading = useSelector(selectAuthIsLoading);
   const navigate = useNavigate();
 
-
   const [errors, setErrors] = useState({});
 
   const [formData, setFormData] = useState({
@@ -25,79 +24,79 @@ const RegistrationForm = () => {
     password: '',
   });
 
- useEffect(() => {
-  dispatch(clearAuthError());
-
-  return () => {
+  useEffect(() => {
     dispatch(clearAuthError());
+
+    return () => {
+      dispatch(clearAuthError());
+    };
+  }, [dispatch]);
+
+  const handleBlur = async (event) => {
+    const { name, value } = event.target;
+
+    try {
+      await registerValidationSchema.validateAt(name, {
+        ...formData,
+        [name]: value,
+      });
+
+      setErrors((prev) => ({
+        ...prev,
+        [name]: '',
+      }));
+    } catch (error) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: error.message,
+      }));
+    }
   };
-}, [dispatch]);
 
-const handleBlur = async event => {
-  const { name, value } = event.target;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  try {
-    await registerValidationSchema.validateAt(name, {
-      ...formData,
+    if (error) {
+      dispatch(clearAuthError());
+    }
+
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
 
-    setErrors(prev => ({
+    setErrors((prev) => ({
       ...prev,
       [name]: '',
     }));
-  } catch (error) {
-    setErrors(prev => ({
-      ...prev,
-      [name]: error.message,
-    }));
-  }
-};
+  };
 
-const handleChange = e => {
-  const { name, value } = e.target;
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-  if (error) {
-    dispatch(clearAuthError());
-  }
-
-  setFormData(prev => ({
-    ...prev,
-    [name]: value,
-  }));
-
-  setErrors(prev => ({
-    ...prev,
-    [name]: '',
-  }));
-};
-
-const handleSubmit = async event => {
-  event.preventDefault();
-
-  try {
-    await registerValidationSchema.validate(formData, {
-      abortEarly: false,
-    });
-
-    setErrors({});
-
-    await dispatch(registerUser(formData)).unwrap();
-
-    navigate('/login');
-  } catch (err) {
-    if (err.inner) {
-      const newErrors = {};
-
-      err.inner.forEach(error => {
-        newErrors[error.path] = error.message;
+    try {
+      await registerValidationSchema.validate(formData, {
+        abortEarly: false,
       });
 
-      setErrors(newErrors);
-      return;
+      setErrors({});
+
+      await dispatch(registerUser(formData)).unwrap();
+
+      navigate('/login');
+    } catch (err) {
+      if (err.inner) {
+        const newErrors = {};
+
+        err.inner.forEach((error) => {
+          newErrors[error.path] = error.message;
+        });
+
+        setErrors(newErrors);
+        return;
+      }
     }
-  }
-};
+  };
 
   return (
     <div className={css.formContainer}>
@@ -111,6 +110,8 @@ const handleSubmit = async event => {
               className={`${css.input} ${errors.name ? css.errorInput : ''}`}
               type="text"
               name="name"
+              id="name"
+              autoComplete="name"
               value={formData.name}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -123,6 +124,8 @@ const handleSubmit = async event => {
             <input
               className={`${css.input} ${errors.email ? css.errorInput : ''}`}
               type="email"
+              id="email"
+              autoComplete="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
@@ -136,12 +139,16 @@ const handleSubmit = async event => {
             <input
               className={`${css.input} ${errors.password ? css.errorInput : ''}`}
               type="password"
+              id="password"
+              autoCapitalize="new-password"
               name="password"
               value={formData.password}
               onChange={handleChange}
               onBlur={handleBlur}
             />
-             {errors.password && <p className={css.fieldError}>{errors.password}</p>}
+            {errors.password && (
+              <p className={css.fieldError}>{errors.password}</p>
+            )}
           </label>
         </div>
 
@@ -153,12 +160,12 @@ const handleSubmit = async event => {
           </button>
 
           <button
-  className={css.secondaryBtn}
-  type="button"
-  onClick={() => navigate('/login')}
->
-  Log in
-</button>
+            className={css.secondaryBtn}
+            type="button"
+            onClick={() => navigate('/login')}
+          >
+            Log in
+          </button>
         </div>
       </form>
     </div>

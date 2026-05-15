@@ -1,7 +1,8 @@
 /* --- MOBİL İLK YAKLAŞIM (Base Styles) --- */
 .diaryPageContainer {
-  min-height: calc(100vh - 260px);
+  min-height: 100dvh;
   margin: 0 auto;
+  background-color: #f0f1f3;
 }
 
 /* Yeni eklediğimiz sarıcı: Ana içerik ve Sidebar'ı tutar */
@@ -13,13 +14,15 @@
 
 .diaryMainContent {
   width: 100%;
-  padding: 40px 20px; /* Mobilde tepeden 140px çok fazla, 40px yeter */
+  padding: 40px 20px;
+  background-color: #ffffff;
 }
 
 .diarySidebar {
   width: 100%;
-  background-color: #F0F1F3;
-  padding: 40px 20px;
+  min-height: 360px;
+  background-color: #f0f1f3;
+  padding: 40px 20px 140px;
 }
 
 /* --- GÖRÜNÜRLÜK (VISIBILITY) CLASS'LARI (7. MADDE İÇİN EKLENDİ) --- */
@@ -70,16 +73,29 @@
   box-shadow: 0px 4px 10px rgba(252, 132, 45, 0.5);
 }
 
-
 /* --- TABLET GÖRÜNÜMÜ (768px - 1279px arası) --- */
 @media screen and (min-width: 768px) and (max-width: 1279px) {
+  .diaryPageContainer {
+    min-height: 100dvh;
+    background-color: #f0f1f3;
+  }
+
+  .contentWrapper {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f1f3;
+  }
+
   .diaryMainContent {
+    background-color: #ffffff;
     padding: 100px 32px 55px 32px;
   }
 
   .diarySidebar {
-    padding: 80px 32px;
-    background-color: #F0F1F3;
+    min-height: 420px;
+    padding: 55px 32px 160px 32px;
+    background-color: #f0f1f3;
     background-image: url('../../assets/images/tablet1x.jpg');
     background-image: -webkit-image-set(
       url('../../assets/images/tablet1x.jpg') 1x,
@@ -87,18 +103,20 @@
     );
     background-repeat: no-repeat;
     background-position: right bottom;
+    background-size: contain;
     background-blend-mode: multiply;
   }
 
-  /* Tablette form görünür, artı butonu gizlenir */
   .desktopFormWrapper {
     display: block;
   }
+
   .floatingBtnWrapper {
     display: none;
   }
+
   .hideOnMobile {
-    display: flex !important; /* Tablette gizleme iptal */
+    display: flex !important;
   }
 }
 
@@ -107,7 +125,13 @@
   .diaryPageContainer {
     background:
       url('../../assets/images/desktop1x.jpg') no-repeat right bottom,
-      linear-gradient(to right, #FFFFFF 0%, #FFFFFF 58%, #F0F1F3 58%, #F0F1F3 100%);
+      linear-gradient(
+        to right,
+        #ffffff 0%,
+        #ffffff 58%,
+        #f0f1f3 58%,
+        #f0f1f3 100%
+      );
     background-blend-mode: multiply, normal;
   }
 

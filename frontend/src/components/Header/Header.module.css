@@ -1,6 +1,6 @@
 /* --- GENEL HEADER STİLLERİ --- */
 .header {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   position: relative; /* Mobile menü bunun altında açılacak */
   z-index: 1000; /* Menünün her şeyin üstünde kalması için */
 }
@@ -74,21 +74,35 @@
   font-weight: 700;
   font-size: 18px; /* Mobilde yazılar masaüstüne göre daha büyüktür */
   letter-spacing: 0.04em;
-  color: #9B9FAA; /* Pasif renk */
+  color: #9b9faa; /* Pasif renk */
   text-decoration: none;
   text-transform: uppercase;
 }
 
 .mobileLink.active {
-  color: #FFFFFF; /* Aktif sayfa bembeyaz parlar */
+  color: #ffffff; /* Aktif sayfa bembeyaz parlar */
 }
 
+.suggestionItem {
+  width: 100%;
+  background: transparent;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menuToggleBtn:focus-visible,
+.mobileLink:focus-visible,
+.link:focus-visible {
+  outline: 2px solid #fc842d;
+  outline-offset: 4px;
+}
 /* --- RESPONSİVE (CİHAZA GÖRE UYARLAMALAR) --- */
 
 /* MOBİL GÖRÜNÜM (<768px) */
 @media screen and (max-width: 767px) {
   .headerContent {
-    border-bottom: 2px solid #E0E0E0;
+    border-bottom: 2px solid #e0e0e0;
   }
 
   .headerRight {
@@ -105,31 +119,33 @@
     display: flex;
     justify-content: flex-end;
     padding: 8px 20px;
-    background-color: #EFF1F3;
+    background-color: #eff1f3;
   }
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 768px) and (max-width: 1279px) {
   .header {
-    border-bottom: 2px solid #E0E0E0;
+    border-bottom: 2px solid #e0e0e0;
   }
 
   .headerContent {
     border-bottom: none;
   }
 
-  .menuToggleBtn {
+  .desktopNav {
     display: none;
   }
 
-  .desktopNav {
+  .menuToggleBtn {
     display: flex;
-    align-items: center;
-    margin-left: auto;
   }
 
   .userInfoWrapper {
-    display: flex; /* Figma'ya göre mobilde Header'da kullanıcı adı yok */
+    display: flex;
+  }
+
+  .headerRight {
+    margin-left: auto;
   }
 }
 
@@ -159,7 +175,7 @@
   .separator {
     height: 32px;
     width: 2px;
-    background-color: #E0E0E0;
+    background-color: #e0e0e0;
     margin: 0 20px;
   }
 
@@ -173,7 +189,7 @@
     font-weight: 700;
     font-size: 14px;
     letter-spacing: 0.04em;
-    color: #9B9FAA;
+    color: #9b9faa;
     text-decoration: none;
   }
 

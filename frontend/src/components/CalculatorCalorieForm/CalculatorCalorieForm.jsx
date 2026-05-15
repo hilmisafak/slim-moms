@@ -91,7 +91,13 @@ const CalculatorCalorieForm = () => {
               <div className={css.col}>
                 <div className={css.field}>
                   <label className={css.label}>Height *</label>
-                  <Field className={css.input} name="height" type="number" />
+                  <Field
+                    id="height"
+                    name="height"
+                    className={css.input}
+                    type="number"
+                    autoComplete="off"
+                  />
                   <ErrorMessage
                     name="height"
                     component="p"
@@ -101,7 +107,13 @@ const CalculatorCalorieForm = () => {
 
                 <div className={css.field}>
                   <label className={css.label}>Age *</label>
-                  <Field className={css.input} name="age" type="number" />
+                  <Field
+                    id="age"
+                    name="age"
+                    className={css.input}
+                    type="number"
+                    autoComplete="off"
+                  />
                   <ErrorMessage
                     name="age"
                     component="p"
@@ -112,9 +124,11 @@ const CalculatorCalorieForm = () => {
                 <div className={css.field}>
                   <label className={css.label}>Current weight *</label>
                   <Field
-                    className={css.input}
+                    id="currentWeight"
                     name="currentWeight"
+                    className={css.input}
                     type="number"
+                    autoComplete="off"
                   />
                   <ErrorMessage
                     name="currentWeight"
@@ -128,9 +142,11 @@ const CalculatorCalorieForm = () => {
                 <div className={css.field}>
                   <label className={css.label}>Desired weight *</label>
                   <Field
-                    className={css.input}
+                    id="desiredWeight"
                     name="desiredWeight"
+                    className={css.input}
                     type="number"
+                    autoComplete="off"
                   />
                   <ErrorMessage
                     name="desiredWeight"
@@ -145,6 +161,7 @@ const CalculatorCalorieForm = () => {
                     {[1, 2, 3, 4].map((type) => (
                       <label key={type} className={css.radioLabel}>
                         <Field
+                          id={`bloodType-${type}`}
                           className={css.radioInput}
                           type="radio"
                           name="bloodType"

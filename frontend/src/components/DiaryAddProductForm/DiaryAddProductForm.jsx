@@ -74,6 +74,9 @@ const DiaryAddProductForm = ({ closeModal }) => {
       <div className={styles.inputWrapper}>
         <input
           type="text"
+          id="productName"
+          name="productName"
+          autoComplete="off"
           className={styles.input}
           placeholder="Enter product name"
           value={query}
@@ -91,12 +94,14 @@ const DiaryAddProductForm = ({ closeModal }) => {
         {suggestions.length > 0 && (
           <ul className={styles.suggestionsDropdown}>
             {suggestions.map((product) => (
-              <li
-                key={product._id}
-                className={styles.suggestionItem}
-                onClick={() => handleSelectProduct(product)}
-              >
-                {product.title}
+              <li key={product._id}>
+                <button
+                  type="button"
+                  className={styles.suggestionItem}
+                  onClick={() => handleSelectProduct(product)}
+                >
+                  {product.title}
+                </button>
               </li>
             ))}
           </ul>
@@ -106,6 +111,8 @@ const DiaryAddProductForm = ({ closeModal }) => {
       <div className={styles.inputWrapper}>
         <input
           type="number"
+          id="grams"
+          name="grams"
           placeholder="Grams"
           className={styles.inputGrams}
           value={grams}

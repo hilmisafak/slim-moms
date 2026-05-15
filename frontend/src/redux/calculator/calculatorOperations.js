@@ -1,6 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
-import axiosInstance from '../../services/api/axiosInstance.js';
+import axiosInstance, {
+  getErrorMessage,
+} from '../../services/api/axiosInstance.js';
 import { showLoader, hideLoader } from '../global/globalSlice.js';
 
 export const calculateDailyCalories = createAsyncThunk(
@@ -15,7 +17,7 @@ export const calculateDailyCalories = createAsyncThunk(
       toast.success('Daily calories calculated successfully');
       return data.data;
     } catch (error) {
-      const message = error.response?.data?.message ?? 'Calculation failed';
+      const message = getErrorMessage(error);
       toast.error(message);
       return thunkAPI.rejectWithValue(message);
     } finally {

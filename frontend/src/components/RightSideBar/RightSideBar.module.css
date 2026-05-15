@@ -65,14 +65,10 @@
 /* --- TABLET --- */
 @media screen and (min-width: 768px) {
   .sidebarContainer {
-    flex-direction: row; /* Tablette yan yana geçebilirler */
-    justify-content: flex-start;
-    gap: 80px;
-  }
-
-  .summarySection,
-  .foodsSection {
-    width: 45%; /* Tablette %45 - %45 yer kaplarlar */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    width: 100%;
   }
 }
 
