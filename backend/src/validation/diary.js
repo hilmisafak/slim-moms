@@ -17,13 +17,11 @@ export const addDiarySchema = Joi.object({
       'string.empty': 'Date cannot be empty.',
       'string.pattern.base': 'Date must be in YYYY-MM-DD format.',
     }),
-  amount: Joi.number()
-    .positive()
-    .required()
-    .messages({
-      'any.required': 'Amount is required.',
-      'number.positive': 'Amount must be greater than 0.',
-    }),
+  amount: Joi.number().positive().max(5000).required().messages({
+    'any.required': 'Amount is required.',
+    'number.positive': 'Amount must be greater than 0.',
+    'number.max': 'Amount must not exceed 5000 grams.',
+  }),
   calories: Joi.number().positive().required().messages({
     'any.required': 'Calories is required.',
     'number.positive': 'Calories must be greater than 0.',

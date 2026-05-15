@@ -16,11 +16,11 @@ const LoginForm = () => {
   const isLoading = useSelector(selectAuthIsLoading);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
-
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     dispatch(clearAuthError());
@@ -119,16 +119,27 @@ const LoginForm = () => {
 
           <label className={css.label}>
             <span className={css.labelText}>Password *</span>
-            <input
-              className={`${css.input} ${errors.password ? css.errorInput : ''}`}
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+            <div className={css.passwordWrapper}>
+              <input
+                className={`${css.input} ${errors.password ? css.errorInput : ''}`}
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                autoComplete="current-password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+
+              <button
+                type="button"
+                className={css.passwordToggle}
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? '🙈' : '👁'}
+              </button>
+            </div>
             {errors.password && (
               <p className={css.fieldError}>{errors.password}</p>
             )}

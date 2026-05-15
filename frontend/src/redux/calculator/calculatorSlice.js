@@ -1,11 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { calculateDailyCalories } from '../calculator/calculatorOperations.js';
 
+const savedCalculatorResult = JSON.parse(
+  localStorage.getItem('calculatorResult') || 'null',
+);
+
 const calculatorSlice = createSlice({
   name: 'calculator',
   initialState: {
-    dailyCalories: null,
-    notRecommendedProducts: [],
+    dailyCalories: savedCalculatorResult?.dailyCalories || null,
+    notRecommendedProducts: savedCalculatorResult?.notRecommendedProducts || [],
     isLoading: false,
     error: null,
   },
@@ -13,6 +17,7 @@ const calculatorSlice = createSlice({
     clearResult(state) {
       state.dailyCalories = null;
       state.notRecommendedProducts = [];
+      localStorage.removeItem('calculatorResult');
     },
   },
   extraReducers: (builder) => {
@@ -25,6 +30,14 @@ const calculatorSlice = createSlice({
         state.isLoading = false;
         state.dailyCalories = action.payload.dailyCalories;
         state.notRecommendedProducts = action.payload.notRecommendedProducts;
+
+        localStorage.setItem(
+          'calculatorResult',
+          JSON.stringify({
+            dailyCalories: action.payload.dailyCalories,
+            notRecommendedProducts: action.payload.notRecommendedProducts,
+          }),
+        );
       })
       .addCase(calculateDailyCalories.rejected, (state, action) => {
         state.isLoading = false;

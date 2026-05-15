@@ -1,15 +1,24 @@
 import { Link } from 'react-router-dom';
-// 1. Yeni indirdiğin PNG veya SVG dosyasını içeri aktar
+import { useSelector } from 'react-redux';
+import {
+  selectAuthToken,
+  selectIsLoggedIn,
+} from '../../redux/auth/authSelectors.js'; // 1. Yeni indirdiğin PNG veya SVG dosyasını içeri aktar
 import logoIcon from '../../assets/images/logo-pngb.jpg';
 import styles from './Logo.module.css';
 
 const Logo = () => {
-  return (
-    <Link to="/" className={styles.logoWrapper}>
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const token = useSelector(selectAuthToken);
 
+  const isAuthenticated = isLoggedIn || token;
+
+  const logoRedirectPath = isAuthenticated ? '/diary' : '/';
+
+  return (
+    <Link to={logoRedirectPath} className={styles.logoWrapper}>
       {/* İKON KISMI (Artık arkası şeffaf!) */}
       <img src={logoIcon} alt="SlimMom Logo" className={styles.iconImg} />
-
       {/* YAZI KISMI (Kesin çalışması için SVG'yi doğrudan gömdük) */}
       <svg
         viewBox="0 0 106 16"
@@ -25,7 +34,6 @@ const Logo = () => {
           d="M52.795 15.204V0.059h1.056l6.083 8.956 6.073-8.956h1.066v15.145h-1.13V2.055l-5.988 8.713h-0.084l-5.999-8.713v13.149zM72.31 9.69q0-1.15 0.433-2.207a5.9 5.9 0 0 1 1.172-1.837 5.4 5.4 0 0 1 1.806-1.257 5.5 5.5 0 0 1 2.27-0.475q1.596 0 2.894 0.792a5.4 5.4 0 0 1 2.028 2.112q0.729 1.32 0.729 2.873a5.8 5.8 0 0 1-0.729 2.862 5.64 5.64 0 0 1-2.049 2.122q-1.309 0.793-2.915 0.793a5.5 5.5 0 0 1-2.249-0.465 5.5 5.5 0 0 1-1.795-1.246 5.9 5.9 0 0 1-1.173-1.838 6 6 0 0 1-0.422-2.228M73.45 9.691q0 1.997 1.31 3.39 1.32 1.384 3.232 1.384a4.2 4.2 0 0 0 2.239-0.633q1.035-0.644 1.647-1.743a4.84 4.84 0 0 0 0.613-2.397q0-1.986-1.331-3.38-1.33-1.404-3.21-1.404-1.225 0-2.26 0.644a4.54 4.54 0 0 0-1.638 1.742 4.9 4.9 0 0 0-0.602 2.398M88.625 15.204V4.178h1.067v1.964q0.306-0.486 0.612-0.845 0.306-0.36 0.74-0.686a3.3 3.3 0 0 1 1.024-0.518q0.591-0.18 1.299-0.18 1.351 0 2.281 0.666a4.25 4.25 0 0 1 1.436 1.711q1.384-2.376 3.982-2.376 1.954 0 3.094 1.257 1.141 1.256 1.141 3.347v6.686h-1.056V8.645q0-1.774-0.866-2.767-0.867-0.993-2.398-0.993-1.457 0-2.47 1.057-1.015 1.056-1.015 2.84v6.422H96.44V8.582q0-1.71-0.876-2.704-0.867-0.993-2.345-0.993t-2.503 1.152q-1.024 1.14-1.024 2.809v6.358z"
         />
       </svg>
-
     </Link>
   );
 };

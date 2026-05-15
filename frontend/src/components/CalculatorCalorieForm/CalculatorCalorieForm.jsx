@@ -90,7 +90,7 @@ const CalculatorCalorieForm = () => {
             <div className={css.fields}>
               <div className={css.col}>
                 <div className={css.field}>
-                  <label className={css.label}>Height *</label>
+                  <label className={css.label} htmlFor='height'>Height *</label>
                   <Field
                     id="height"
                     name="height"
@@ -106,7 +106,7 @@ const CalculatorCalorieForm = () => {
                 </div>
 
                 <div className={css.field}>
-                  <label className={css.label}>Age *</label>
+                  <label className={css.label} htmlFor='age'>Age *</label>
                   <Field
                     id="age"
                     name="age"
@@ -122,7 +122,7 @@ const CalculatorCalorieForm = () => {
                 </div>
 
                 <div className={css.field}>
-                  <label className={css.label}>Current weight *</label>
+                  <label className={css.label} htmlFor='currentWeight'>Current weight *</label>
                   <Field
                     id="currentWeight"
                     name="currentWeight"
@@ -140,7 +140,7 @@ const CalculatorCalorieForm = () => {
 
               <div className={css.col}>
                 <div className={css.field}>
-                  <label className={css.label}>Desired weight *</label>
+                  <label className={css.label} htmlFor='desiredWeight'>Desired weight *</label>
                   <Field
                     id="desiredWeight"
                     name="desiredWeight"
@@ -159,7 +159,7 @@ const CalculatorCalorieForm = () => {
                   <p className={css.bloodTypeLabel}>Blood type *</p>
                   <div className={css.radioGroup}>
                     {[1, 2, 3, 4].map((type) => (
-                      <label key={type} className={css.radioLabel}>
+                      <label key={type} className={css.radioLabel} htmlFor={`bloodType-${type}`}>
                         <Field
                           id={`bloodType-${type}`}
                           className={css.radioInput}

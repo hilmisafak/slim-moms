@@ -187,6 +187,35 @@
   outline-offset: 2px;
 }
 
+.passwordWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.passwordWrapper .input {
+  width: 100%;
+  padding-right: 36px;
+}
+
+/* Edge native icon kapat */
+.input::-ms-reveal,
+.input::-ms-clear {
+  display: none;
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+}
+
 @media screen and (min-width: 768px) {
   .formContainer {
     width: 240px;

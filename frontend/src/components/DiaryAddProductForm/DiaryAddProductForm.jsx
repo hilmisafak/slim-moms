@@ -48,6 +48,14 @@ const DiaryAddProductForm = ({ closeModal }) => {
     if (!selectedProduct || !grams) return;
 
     const amountNumber = Number(grams);
+    if (
+      !Number.isFinite(amountNumber) ||
+      amountNumber < 1 ||
+      amountNumber > 5000
+    ) {
+      return;
+    }
+
     const calculatedCalories = Math.round(
       (selectedProduct.calories / 100) * amountNumber,
     );
@@ -116,16 +124,31 @@ const DiaryAddProductForm = ({ closeModal }) => {
           placeholder="Grams"
           className={styles.inputGrams}
           value={grams}
-          onChange={(e) => setGrams(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+
+            if (Number(value) > 5000) {
+              return;
+            }
+
+            setGrams(value);
+          }}
           required
           min="1"
+          max="5000"
+          step="1"
         />
       </div>
 
       <button
         type="submit"
         className={styles.addBtn}
-        disabled={!selectedProduct || !grams}
+        disabled={
+          !selectedProduct ||
+          !grams ||
+          Number(grams) < 1 ||
+          Number(grams) > 5000
+        }
       >
         <span className={styles.desktopPlus}>+</span>
         <span className={styles.mobileAddText}>Add</span>

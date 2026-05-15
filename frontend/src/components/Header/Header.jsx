@@ -18,7 +18,7 @@ const Header = () => {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
-
+  const isDesktop = window.innerWidth >= 1280;
   const mobileLinks = isAuthenticated
     ? [
         { to: '/diary', label: 'DIARY' },
@@ -36,10 +36,12 @@ const Header = () => {
           <Logo />
         </div>
 
-        <div className={styles.desktopNav}>
-          <div className={styles.separator}></div>
-          <Navigation />
-        </div>
+        {(!isAuthenticated || isDesktop) && (
+          <div className={styles.desktopNav}>
+            <div className={styles.separator}></div>
+            <Navigation />
+          </div>
+        )}
 
         <div className={styles.headerRight}>
           {isAuthenticated && (

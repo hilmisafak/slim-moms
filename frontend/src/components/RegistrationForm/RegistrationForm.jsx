@@ -24,6 +24,8 @@ const RegistrationForm = () => {
     password: '',
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
   useEffect(() => {
     dispatch(clearAuthError());
 
@@ -136,16 +138,27 @@ const RegistrationForm = () => {
 
           <label className={css.label}>
             <span className={css.labelText}>Password *</span>
-            <input
-              className={`${css.input} ${errors.password ? css.errorInput : ''}`}
-              type="password"
-              id="password"
-              autoCapitalize="new-password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
+            <div className={css.passwordWrapper}>
+              <input
+                className={`${css.input} ${errors.password ? css.errorInput : ''}`}
+                type={showPassword ? 'text' : 'password'}
+                id="password"
+                autoComplete="new-password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+
+              <button
+                type="button"
+                className={css.passwordToggle}
+                onClick={() => setShowPassword((prev) => !prev)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+              >
+                {showPassword ? '🙈' : '👁'}
+              </button>
+            </div>
             {errors.password && (
               <p className={css.fieldError}>{errors.password}</p>
             )}
