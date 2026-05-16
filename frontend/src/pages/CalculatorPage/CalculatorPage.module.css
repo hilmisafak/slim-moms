@@ -18,10 +18,9 @@
 }
 
 .resultSection {
-  width: 100%;
+  background: #f0f1f3;
+  padding: 40px 20px 80px;
   min-height: 360px;
-  background-color: #f0f1f3;
-  padding: 40px 20px 140px;
 }
 
 .title {
@@ -32,15 +31,10 @@
   margin-bottom: 34px;
 }
 
-/* --- TABLET (768px - 1279px) — Diary ile aynı yapı --- */
+/* --- TABLET (768px - 1279px) — Diary ile aynı --- */
 @media screen and (min-width: 768px) and (max-width: 1279px) {
-  .container {
-    min-height: 100dvh;
-    overflow-x: hidden;
-  }
-
   .formSection {
-    padding: 100px 32px 40px 32px;
+    padding: 100px 32px 55px 32px;
   }
 
   .title {
@@ -50,8 +44,7 @@
   }
 
   .resultSection {
-    min-height: auto;
-    padding: 55px 32px 100px 32px;
+    padding: 80px 32px 200px;
     background-color: #f0f1f3;
     background-image: url('../../assets/images/tablet1x.jpg');
     background-image: -webkit-image-set(
@@ -60,7 +53,6 @@
     );
     background-repeat: no-repeat;
     background-position: right bottom;
-    background-size: 55% auto;
     background-blend-mode: multiply;
   }
 }
@@ -92,8 +84,7 @@
 
   .resultSection {
     width: 42%;
-    min-height: auto;
-    padding: 0;
+    padding: 80px 40px 80px 40px;
     background-color: transparent;
     background-image: none;
   }
