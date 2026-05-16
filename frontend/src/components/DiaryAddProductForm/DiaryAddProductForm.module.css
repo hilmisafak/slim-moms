@@ -129,10 +129,12 @@
 @media screen and (min-width: 768px) {
   .diaryForm {
     flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
     gap: 30px;
     margin-bottom: 40px;
+    max-width: 100%;
   }
 
   .inputWrapper:nth-child(1),

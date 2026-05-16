@@ -78,10 +78,10 @@
   .diaryPageContainer {
     min-height: 100dvh;
     background-color: #f0f1f3;
+    overflow-x: hidden;
   }
 
   .contentWrapper {
-    min-height: 100dvh;
     display: flex;
     flex-direction: column;
     background-color: #f0f1f3;
@@ -89,12 +89,12 @@
 
   .diaryMainContent {
     background-color: #ffffff;
-    padding: 100px 32px 55px 32px;
+    padding: 100px 32px 40px 32px;
   }
 
   .diarySidebar {
-    min-height: 420px;
-    padding: 55px 32px 160px 32px;
+    min-height: auto;
+    padding: 55px 32px 100px 32px;
     background-color: #f0f1f3;
     background-image: url('../../assets/images/tablet1x.jpg');
     background-image: -webkit-image-set(
@@ -103,7 +103,7 @@
     );
     background-repeat: no-repeat;
     background-position: right bottom;
-    background-size: contain;
+    background-size: 55% auto;
     background-blend-mode: multiply;
   }
 

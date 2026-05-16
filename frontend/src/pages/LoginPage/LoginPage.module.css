@@ -2,7 +2,7 @@
     min-height: calc(100vh - 80px);
     background: var(--color-bg);
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .decor {
@@ -17,7 +17,7 @@
     margin: 0 auto;
     position: relative;
     min-height: calc(100vh - 80px);
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 /* Ana içerik alanı */
@@ -44,8 +44,8 @@
         padding: 0 16px;
     }
     .scene {
-        height: 1024px;
-        min-height: unset;
+        height: auto;
+        min-height: calc(100dvh - 80px);
     }
 
     .decor {

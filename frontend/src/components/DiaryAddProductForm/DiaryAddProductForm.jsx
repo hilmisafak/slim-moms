@@ -1,8 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import { addProduct } from '../../redux/diary/diaryOperations';
 import { selectDiaryDate } from '../../redux/diary/diarySelectors';
-import axiosInstance from '../../services/api/axiosInstance';
+import axiosInstance, {
+  getErrorMessage,
+} from '../../services/api/axiosInstance';
 import styles from './DiaryAddProductForm.module.css';
 
 const DiaryAddProductForm = ({ closeModal }) => {
@@ -12,9 +15,11 @@ const DiaryAddProductForm = ({ closeModal }) => {
   const [grams, setGrams] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const searchErrorShownRef = useRef(false);
 
   useEffect(() => {
     if (query.length < 2) {
+      searchErrorShownRef.current = false;
       return;
     }
 
@@ -25,8 +30,16 @@ const DiaryAddProductForm = ({ closeModal }) => {
         );
         const productsArray = data?.data?.data || data?.data || [];
         setSuggestions(productsArray);
-      } catch {
+        searchErrorShownRef.current = false;
+      } catch (error) {
         setSuggestions([]);
+        if (
+          !searchErrorShownRef.current &&
+          (!navigator.onLine || error.code === 'ERR_NETWORK')
+        ) {
+          toast.error(getErrorMessage(error));
+          searchErrorShownRef.current = true;
+        }
       }
     };
 
@@ -43,7 +56,7 @@ const DiaryAddProductForm = ({ closeModal }) => {
     setSuggestions([]);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedProduct || !grams) return;
 
@@ -59,21 +72,26 @@ const DiaryAddProductForm = ({ closeModal }) => {
     const calculatedCalories = Math.round(
       (selectedProduct.calories / 100) * amountNumber,
     );
-    dispatch(
-      addProduct({
-        date: date,
-        productId: selectedProduct._id,
-        amount: amountNumber,
-        calories: calculatedCalories,
-      }),
-    );
 
-    setQuery('');
-    setGrams('');
-    setSelectedProduct(null);
+    try {
+      await dispatch(
+        addProduct({
+          date: date,
+          productId: selectedProduct._id,
+          amount: amountNumber,
+          calories: calculatedCalories,
+        }),
+      ).unwrap();
 
-    if (closeModal) {
-      closeModal();
+      setQuery('');
+      setGrams('');
+      setSelectedProduct(null);
+
+      if (closeModal) {
+        closeModal();
+      }
+    } catch {
+      // Toast is shown in diaryOperations
     }
   };
 

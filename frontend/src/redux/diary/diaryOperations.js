@@ -34,8 +34,9 @@ export const addProduct = createAsyncThunk(
       toast.success('Product added');
       return data;
     } catch (error) {
-      toast.error(error.response?.data?.message ?? 'Failed to add product');
-      return thunkAPI.rejectWithValue(error.response?.data?.message);
+      const message = getErrorMessage(error);
+      toast.error(message);
+      return thunkAPI.rejectWithValue(message);
     } finally {
       thunkAPI.dispatch(hideLoader());
     }
@@ -52,8 +53,9 @@ export const removeProduct = createAsyncThunk(
       toast.success('Product removed');
       return { id: productId };
     } catch (error) {
-      toast.error(error.response?.data?.message ?? 'Failed to remove product');
-      return thunkAPI.rejectWithValue(error.response?.data?.message);
+      const message = getErrorMessage(error);
+      toast.error(message);
+      return thunkAPI.rejectWithValue(message);
     } finally {
       thunkAPI.dispatch(hideLoader());
     }
